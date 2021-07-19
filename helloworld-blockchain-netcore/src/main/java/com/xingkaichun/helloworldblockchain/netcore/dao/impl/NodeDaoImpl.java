@@ -76,9 +76,9 @@ public class NodeDaoImpl implements NodeDao {
         return ByteUtil.stringToUtf8Bytes(ip);
     }
     private byte[] encode(NodePo node){
-        return ByteUtil.stringToUtf8Bytes(JsonUtil.toJson(node));
+        return ByteUtil.stringToUtf8Bytes(JsonUtil.toString(node));
     }
     private NodePo decodeToNodePo(byte[] bytesNodePo){
-        return JsonUtil.fromJson(ByteUtil.utf8BytesToString(bytesNodePo), NodePo.class);
+        return JsonUtil.toObject(ByteUtil.utf8BytesToString(bytesNodePo), NodePo.class);
     }
 }

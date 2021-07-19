@@ -11,6 +11,7 @@ import com.xingkaichun.helloworldblockchain.core.tools.*;
 import com.xingkaichun.helloworldblockchain.netcore.BlockchainNetCore;
 import com.xingkaichun.helloworldblockchain.netcore.dto.TransactionDto;
 import com.xingkaichun.helloworldblockchain.util.LogUtil;
+import com.xingkaichun.helloworldblockchain.util.StringUtil;
 import com.xingkaichun.helloworldblockchain.util.TimeUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,7 +47,7 @@ public class BlockchainBrowserApplicationServiceImpl implements BlockchainBrowse
         transactionOutputDetailVo.setFromBlockHash(transactionOutput.getBlockHash());
         transactionOutputDetailVo.setFromTransactionHash(transactionOutput.getTransactionHash());
         transactionOutputDetailVo.setValue(transactionOutput.getValue());
-        transactionOutputDetailVo.setFromOutputScript(ScriptTool.toString(transactionOutput.getOutputScript()));
+        transactionOutputDetailVo.setFromOutputScript(ScriptTool.stringOutputScript(transactionOutput.getOutputScript()));
         transactionOutputDetailVo.setFromTransactionOutputIndex(transactionOutput.getTransactionOutputIndex());
 
         //是否是未花费输出
@@ -70,10 +71,10 @@ public class BlockchainBrowserApplicationServiceImpl implements BlockchainBrowse
             if(inputs != null){
                 for(TransactionInput transactionInput : inputs){
                     TransactionOutput unspentTransactionOutput = transactionInput.getUnspentTransactionOutput();
-                    if(transactionOutput.getTransactionHash().equals(unspentTransactionOutput.getTransactionHash()) &&
+                    if(StringUtil.isEquals(transactionOutput.getTransactionHash(),unspentTransactionOutput.getTransactionHash()) &&
                             transactionOutput.getTransactionOutputIndex()==unspentTransactionOutput.getTransactionOutputIndex()){
                         transactionOutputDetailVo.setToTransactionInputIndex(outputTransactionVo.getTransactionInputCount());
-                        transactionOutputDetailVo.setToInputScript(ScriptTool.toString(transactionInput.getInputScript()));
+                        transactionOutputDetailVo.setToInputScript(ScriptTool.stringInputScript(transactionInput.getInputScript()));
                         break;
                     }
                 }
@@ -128,7 +129,7 @@ public class BlockchainBrowserApplicationServiceImpl implements BlockchainBrowse
         blockVo.setConfirmCount(BlockTool.getTransactionCount(block));
         blockVo.setBlockSize(SizeTool.calculateBlockSize(block)+"字符");
         blockVo.setTransactionCount(BlockTool.getTransactionCount(block));
-        blockVo.setTime(TimeUtil.formatMillisecondTimestamp2TimeString(block.getTimestamp()));
+        blockVo.setTime(TimeUtil.formatMillisecondTimestamp(block.getTimestamp()));
         blockVo.setMinerIncentiveValue(BlockTool.getWritedIncentiveValue(block));
         blockVo.setDifficulty(BlockTool.formatDifficulty(block.getDifficulty()));
         blockVo.setNonce(block.getNonce());
@@ -205,7 +206,7 @@ public class BlockchainBrowserApplicationServiceImpl implements BlockchainBrowse
         long blockchainHeight = blockchainCore.queryBlockchainHeight();
         Block block = blockchainCore.queryBlockByBlockHeight(transaction.getBlockHeight());
         transactionVo.setConfirmCount(blockchainHeight-block.getHeight()+1);
-        transactionVo.setBlockTime(TimeUtil.formatMillisecondTimestamp2TimeString(block.getTimestamp()));
+        transactionVo.setBlockTime(TimeUtil.formatMillisecondTimestamp(block.getTimestamp()));
         transactionVo.setBlockHash(block.getHash());
 
         List<TransactionInput> inputs = transaction.getInputs();
@@ -215,7 +216,7 @@ public class BlockchainBrowserApplicationServiceImpl implements BlockchainBrowse
                 TransactionInputVo transactionInputVo = new TransactionInputVo();
                 transactionInputVo.setAddress(transactionInput.getUnspentTransactionOutput().getAddress());
                 transactionInputVo.setValue(transactionInput.getUnspentTransactionOutput().getValue());
-                transactionInputVo.setInputScript(ScriptTool.toString(transactionInput.getInputScript()));
+                transactionInputVo.setInputScript(ScriptTool.stringInputScript(transactionInput.getInputScript()));
                 transactionInputVo.setTransactionHash(transactionInput.getUnspentTransactionOutput().getTransactionHash());
                 transactionInputVo.setTransactionOutputIndex(transactionInput.getUnspentTransactionOutput().getTransactionOutputIndex());
                 transactionInputVos.add(transactionInputVo);
@@ -230,7 +231,7 @@ public class BlockchainBrowserApplicationServiceImpl implements BlockchainBrowse
                 TransactionOutputVo transactionOutputVo = new TransactionOutputVo();
                 transactionOutputVo.setAddress(transactionOutput.getAddress());
                 transactionOutputVo.setValue(transactionOutput.getValue());
-                transactionOutputVo.setOutputScript(ScriptTool.toString(transactionOutput.getOutputScript()));
+                transactionOutputVo.setOutputScript(ScriptTool.stringOutputScript(transactionOutput.getOutputScript()));
                 transactionOutputVo.setTransactionHash(transactionOutput.getTransactionHash());
                 transactionOutputVo.setTransactionOutputIndex(transactionOutput.getTransactionOutputIndex());
                 transactionOutputVos.add(transactionOutputVo);

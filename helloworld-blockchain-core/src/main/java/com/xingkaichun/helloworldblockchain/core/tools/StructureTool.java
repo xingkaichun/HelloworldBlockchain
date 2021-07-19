@@ -1,15 +1,11 @@
 package com.xingkaichun.helloworldblockchain.core.tools;
 
 import com.xingkaichun.helloworldblockchain.core.model.Block;
-import com.xingkaichun.helloworldblockchain.core.model.script.OperationCodeEnum;
-import com.xingkaichun.helloworldblockchain.core.model.script.Script;
 import com.xingkaichun.helloworldblockchain.core.model.transaction.Transaction;
 import com.xingkaichun.helloworldblockchain.core.model.transaction.TransactionInput;
 import com.xingkaichun.helloworldblockchain.core.model.transaction.TransactionOutput;
 import com.xingkaichun.helloworldblockchain.core.model.transaction.TransactionType;
-import com.xingkaichun.helloworldblockchain.crypto.ByteUtil;
-import com.xingkaichun.helloworldblockchain.crypto.HexUtil;
-import com.xingkaichun.helloworldblockchain.setting.Setting;
+import com.xingkaichun.helloworldblockchain.setting.BlockSetting;
 import com.xingkaichun.helloworldblockchain.util.LogUtil;
 
 import java.util.List;
@@ -33,8 +29,8 @@ public class StructureTool {
         }
         //校验区块中交易的数量
         long transactionCount = BlockTool.getTransactionCount(block);
-        if(transactionCount > Setting.BlockSetting.BLOCK_MAX_TRANSACTION_COUNT){
-            LogUtil.debug(String.format("区块包含交易数量是[%s]超过限制[%s]。",transactionCount, Setting.BlockSetting.BLOCK_MAX_TRANSACTION_COUNT));
+        if(transactionCount > BlockSetting.BLOCK_MAX_TRANSACTION_COUNT){
+            LogUtil.debug("区块包含的交易数量是["+transactionCount+"]，超过了限制["+ BlockSetting.BLOCK_MAX_TRANSACTION_COUNT+"]。");
             return false;
         }
         for(int i=0; i<transactions.size(); i++){
@@ -90,42 +86,25 @@ public class StructureTool {
             LogUtil.debug("交易数据异常：不能识别的交易的类型。");
             return false;
         }
-        //校验脚本结构
-        //输入脚本不需要校验，如果输入脚本结构有误，则在业务[交易输入脚本解锁交易输出脚本]上就通不过。
-
-        //校验输出脚本
-        List<TransactionOutput> outputs = transaction.getOutputs();
-        if(outputs != null){
-            for (TransactionOutput transactionOutput:outputs) {
-                if(!checkScriptStructure(transactionOutput.getOutputScript())){
+        //校验输入脚本
+        List<TransactionInput> inputs = transaction.getInputs();
+        if(inputs != null){
+            for (TransactionInput input:inputs) {
+                //这里采用严格校验，必须是P2PKH输入脚本。
+                if(!ScriptTool.isPayToPublicKeyHashInputScript(input.getInputScript())){
+                    LogUtil.debug("交易数据异常：创世交易不能有交易输入。");
                     return false;
                 }
             }
         }
-        return true;
-    }
-    /**
-     * 校验脚本的结构
-     */
-    public static boolean checkScriptStructure(Script script) {
-        for(int i=0;i<script.size();i++){
-            String operationCode = script.get(i);
-            byte[] bytesOperationCode = HexUtil.hexStringToBytes(operationCode);
-            if(ByteUtil.equals(OperationCodeEnum.OP_DUP.getCode(),bytesOperationCode) ||
-                    ByteUtil.equals(OperationCodeEnum.OP_HASH160.getCode(),bytesOperationCode) ||
-                    ByteUtil.equals(OperationCodeEnum.OP_EQUALVERIFY.getCode(),bytesOperationCode) ||
-                    ByteUtil.equals(OperationCodeEnum.OP_CHECKSIG.getCode(),bytesOperationCode)){
-                continue;
-            }else if(ByteUtil.equals(OperationCodeEnum.OP_PUSHDATA.getCode(),bytesOperationCode)){
-                //跳过操作数
-                ++i;
-                //验证操作码后一定有操作数
-                if(script.size()<i+1){
+        //校验输出脚本
+        List<TransactionOutput> outputs = transaction.getOutputs();
+        if(outputs != null){
+            for (TransactionOutput output:outputs) {
+                //这里采用严格校验，必须是P2PKH输出脚本
+                if(!ScriptTool.isPayToPublicKeyHashOutputScript(output.getOutputScript())){
                     return false;
                 }
-            }else {
-                //不能识别的操作码
-                return false;
             }
         }
         return true;

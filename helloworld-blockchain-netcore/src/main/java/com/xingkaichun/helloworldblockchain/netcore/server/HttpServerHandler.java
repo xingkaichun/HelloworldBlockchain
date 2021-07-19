@@ -47,37 +47,37 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
 		if("/".equals(requestApi)){
 			responseMessage = "HelloworldBlockchain";
 		}else if(API.PING.equals(requestApi)){
-			PingRequest request = JsonUtil.fromJson(requestBody, PingRequest.class);
+			PingRequest request = JsonUtil.toObject(requestBody, PingRequest.class);
 			PingResponse response = httpServerHandlerResolver.ping(requestIp,request);
-			responseMessage = JsonUtil.toJson(response);
+			responseMessage = JsonUtil.toString(response);
 		}else if(API.GET_NODES.equals(requestApi)){
-			GetNodesRequest request = JsonUtil.fromJson(requestBody, GetNodesRequest.class);
+			GetNodesRequest request = JsonUtil.toObject(requestBody, GetNodesRequest.class);
 			GetNodesResponse getBlockResponse = httpServerHandlerResolver.getNodes(request);
-			responseMessage = JsonUtil.toJson(getBlockResponse);
+			responseMessage = JsonUtil.toString(getBlockResponse);
 		}else if(API.GET_BLOCK.equals(requestApi)){
-			GetBlockRequest request = JsonUtil.fromJson(requestBody, GetBlockRequest.class);
+			GetBlockRequest request = JsonUtil.toObject(requestBody, GetBlockRequest.class);
 			GetBlockResponse getBlockResponse = httpServerHandlerResolver.getBlock(request);
-			responseMessage = JsonUtil.toJson(getBlockResponse);
+			responseMessage = JsonUtil.toString(getBlockResponse);
 		}else if(API.GET_UNCONFIRMED_TRANSACTIONS.equals(requestApi)){
-			GetUnconfirmedTransactionsRequest request = JsonUtil.fromJson(requestBody, GetUnconfirmedTransactionsRequest.class);
+			GetUnconfirmedTransactionsRequest request = JsonUtil.toObject(requestBody, GetUnconfirmedTransactionsRequest.class);
 			GetUnconfirmedTransactionsResponse response = httpServerHandlerResolver.getUnconfirmedTransactions(request);
-			responseMessage = JsonUtil.toJson(response);
+			responseMessage = JsonUtil.toString(response);
 		}else if(API.POST_TRANSACTION.equals(requestApi)){
-			PostTransactionRequest request = JsonUtil.fromJson(requestBody, PostTransactionRequest.class);
+			PostTransactionRequest request = JsonUtil.toObject(requestBody, PostTransactionRequest.class);
 			PostTransactionResponse response = httpServerHandlerResolver.postTransaction(request);
-			responseMessage = JsonUtil.toJson(response);
+			responseMessage = JsonUtil.toString(response);
 		}else if(API.POST_BLOCK.equals(requestApi)){
-			PostBlockRequest request = JsonUtil.fromJson(requestBody, PostBlockRequest.class);
+			PostBlockRequest request = JsonUtil.toObject(requestBody, PostBlockRequest.class);
 			PostBlockResponse response = httpServerHandlerResolver.postBlock(request);
-			responseMessage = JsonUtil.toJson(response);
+			responseMessage = JsonUtil.toString(response);
 		}else if(API.POST_BLOCKCHAIN_HEIGHT.equals(requestApi)){
-			PostBlockchainHeightRequest request = JsonUtil.fromJson(requestBody, PostBlockchainHeightRequest.class);
+			PostBlockchainHeightRequest request = JsonUtil.toObject(requestBody, PostBlockchainHeightRequest.class);
 			PostBlockchainHeightResponse response = httpServerHandlerResolver.postBlockchainHeight(requestIp,request);
-			responseMessage = JsonUtil.toJson(response);
+			responseMessage = JsonUtil.toString(response);
 		}else if(API.GET_BLOCKCHAIN_HEIGHT.equals(requestApi)){
-			GetBlockchainHeightRequest request = JsonUtil.fromJson(requestBody, GetBlockchainHeightRequest.class);
+			GetBlockchainHeightRequest request = JsonUtil.toObject(requestBody, GetBlockchainHeightRequest.class);
 			GetBlockchainHeightResponse response = httpServerHandlerResolver.getBlockchainHeight(request);
-			responseMessage = JsonUtil.toJson(response);
+			responseMessage = JsonUtil.toString(response);
 		}else {
 			responseMessage = "404 NOT FOUND";
 		}

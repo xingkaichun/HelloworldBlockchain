@@ -104,7 +104,7 @@ public class Dto2ModelTool {
 
     private static TransactionOutput transactionOutputDto2TransactionOutput(TransactionOutputDto transactionOutputDto) {
         TransactionOutput transactionOutput = new TransactionOutput();
-        String publicKeyHash = ScriptTool.getPublicKeyHashByPayToPublicKeyHashOutputScript(transactionOutputDto.getOutputScript());
+        String publicKeyHash = ScriptDtoTool.getPublicKeyHashFromPayToPublicKeyHashOutputScript(transactionOutputDto.getOutputScript());
         String address = AccountUtil.addressFromPublicKeyHash(publicKeyHash);
         transactionOutput.setAddress(address);
         transactionOutput.setValue(transactionOutputDto.getValue());

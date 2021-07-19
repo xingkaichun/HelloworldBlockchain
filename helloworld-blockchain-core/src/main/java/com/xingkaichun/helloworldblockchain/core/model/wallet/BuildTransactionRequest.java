@@ -8,6 +8,7 @@ import java.util.List;
  */
 public class BuildTransactionRequest {
 
+    //TODO 更恰当的命名
     private List<String> payerPrivateKeyList ;
     private List<Recipient> recipientList ;
     private long fee ;

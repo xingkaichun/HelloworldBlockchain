@@ -40,7 +40,7 @@ public class WebMvcConfigurerConfiguration implements WebMvcConfigurer {
 				httpServletResponse.setStatus(500);
 				httpServletResponse.setCharacterEncoding("UTF-8");
 				ServiceResult serviceResult = ServiceResult.createFailServiceResult(exception.getMessage());
-				String jsonServiceResult = JsonUtil.toJson(serviceResult);
+				String jsonServiceResult = JsonUtil.toString(serviceResult);
 				httpServletResponse.getWriter().write(jsonServiceResult);
 			} catch (Exception e) {
 				LogUtil.error("将统一异常写入到HttpServletResponse出现错误。",e);

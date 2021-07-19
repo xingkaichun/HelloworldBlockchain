@@ -18,7 +18,7 @@ public class EncodeDecodeTool {
 
     public static byte[] encodeTransaction(Transaction transaction) {
         try {
-            return ByteUtil.stringToUtf8Bytes(JsonUtil.toJson(transaction));
+            return ByteUtil.stringToUtf8Bytes(JsonUtil.toString(transaction));
         } catch (Exception e) {
             LogUtil.error("serialize Transaction failed.",e);
             throw new RuntimeException(e);
@@ -26,7 +26,7 @@ public class EncodeDecodeTool {
     }
     public static Transaction decodeToTransaction(byte[] bytesTransaction) {
         try {
-            return JsonUtil.fromJson(ByteUtil.utf8BytesToString(bytesTransaction),Transaction.class);
+            return JsonUtil.toObject(ByteUtil.utf8BytesToString(bytesTransaction),Transaction.class);
         } catch (Exception e) {
             LogUtil.error("deserialize Transaction failed.",e);
             throw new RuntimeException(e);
@@ -36,7 +36,7 @@ public class EncodeDecodeTool {
 
     public static byte[] encodeTransactionOutput(TransactionOutput transactionOutput) {
         try {
-            return ByteUtil.stringToUtf8Bytes(JsonUtil.toJson(transactionOutput));
+            return ByteUtil.stringToUtf8Bytes(JsonUtil.toString(transactionOutput));
         } catch (Exception e) {
             LogUtil.error("serialize TransactionOutput failed.",e);
             throw new RuntimeException(e);
@@ -44,7 +44,7 @@ public class EncodeDecodeTool {
     }
     public static TransactionOutput decodeToTransactionOutput(byte[] bytesTransactionOutput) {
         try {
-            return JsonUtil.fromJson(ByteUtil.utf8BytesToString(bytesTransactionOutput),TransactionOutput.class);
+            return JsonUtil.toObject(ByteUtil.utf8BytesToString(bytesTransactionOutput),TransactionOutput.class);
         } catch (Exception e) {
             LogUtil.error("deserialize TransactionOutput failed.",e);
             throw new RuntimeException(e);
@@ -54,7 +54,7 @@ public class EncodeDecodeTool {
 
     public static byte[] encodeBlock(Block block) {
         try {
-            return ByteUtil.stringToUtf8Bytes(JsonUtil.toJson(block));
+            return ByteUtil.stringToUtf8Bytes(JsonUtil.toString(block));
         } catch (Exception e) {
             LogUtil.error("serialize Block failed.",e);
             throw new RuntimeException(e);
@@ -62,7 +62,7 @@ public class EncodeDecodeTool {
     }
     public static Block decodeToBlock(byte[] bytesBlock) {
         try {
-            return JsonUtil.fromJson(ByteUtil.utf8BytesToString(bytesBlock),Block.class);
+            return JsonUtil.toObject(ByteUtil.utf8BytesToString(bytesBlock),Block.class);
         } catch (Exception e) {
             LogUtil.error("deserialize Block failed.",e);
             throw new RuntimeException(e);
@@ -72,7 +72,7 @@ public class EncodeDecodeTool {
 
     public static byte[] encodeTransactionDto(TransactionDto transactionDto) {
         try {
-            return ByteUtil.stringToUtf8Bytes(JsonUtil.toJson(transactionDto));
+            return ByteUtil.stringToUtf8Bytes(JsonUtil.toString(transactionDto));
         } catch (Exception e) {
             LogUtil.error("serialize TransactionDto failed.",e);
             throw new RuntimeException(e);
@@ -80,7 +80,7 @@ public class EncodeDecodeTool {
     }
     public static TransactionDto decodeToTransactionDto(byte[] bytesTransactionDto) {
         try {
-            return JsonUtil.fromJson(ByteUtil.utf8BytesToString(bytesTransactionDto), TransactionDto.class);
+            return JsonUtil.toObject(ByteUtil.utf8BytesToString(bytesTransactionDto), TransactionDto.class);
         } catch (Exception e) {
             LogUtil.error("deserialize TransactionDto failed.",e);
             throw new RuntimeException(e);
@@ -90,7 +90,7 @@ public class EncodeDecodeTool {
 
     public static byte[] encodeAccount(Account account) {
         try {
-            return ByteUtil.stringToUtf8Bytes(JsonUtil.toJson(account));
+            return ByteUtil.stringToUtf8Bytes(JsonUtil.toString(account));
         } catch (Exception e) {
             LogUtil.error("serialize Transaction failed.",e);
             throw new RuntimeException(e);
@@ -98,7 +98,7 @@ public class EncodeDecodeTool {
     }
     public static Account decodeToAccount(byte[] bytesAccount) {
         try {
-            return JsonUtil.fromJson(ByteUtil.utf8BytesToString(bytesAccount),Account.class);
+            return JsonUtil.toObject(ByteUtil.utf8BytesToString(bytesAccount),Account.class);
         } catch (Exception e) {
             LogUtil.error("deserialize Account failed.",e);
             throw new RuntimeException(e);

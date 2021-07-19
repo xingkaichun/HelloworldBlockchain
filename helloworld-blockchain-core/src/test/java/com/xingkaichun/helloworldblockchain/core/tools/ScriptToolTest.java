@@ -1,7 +1,7 @@
 package com.xingkaichun.helloworldblockchain.core.tools;
 
 import com.xingkaichun.helloworldblockchain.core.model.script.OperationCodeEnum;
-import com.xingkaichun.helloworldblockchain.crypto.HexUtil;
+import com.xingkaichun.helloworldblockchain.crypto.ByteUtil;
 import com.xingkaichun.helloworldblockchain.netcore.dto.InputScriptDto;
 import com.xingkaichun.helloworldblockchain.netcore.dto.OutputScriptDto;
 import com.xingkaichun.helloworldblockchain.util.JsonUtil;
@@ -15,23 +15,23 @@ public class ScriptToolTest {
     public void bytesScriptTest()
     {
         InputScriptDto inputScriptDto = new InputScriptDto();
-        inputScriptDto.add(HexUtil.bytesToHexString(OperationCodeEnum.OP_PUSHDATA.getCode()));
+        inputScriptDto.add(ByteUtil.bytesToHexString(OperationCodeEnum.OP_PUSHDATA.getCode()));
         inputScriptDto.add("955c1464982a1c904b7b1029598de6ace11bd2b1");
 
-        InputScriptDto resumeInputScriptDto =  ScriptTool.inputScriptDto(ScriptTool.bytesScript(inputScriptDto));
-        Assert.assertEquals(JsonUtil.toJson(inputScriptDto),JsonUtil.toJson(resumeInputScriptDto));
+        InputScriptDto resumeInputScriptDto =  ScriptDtoTool.inputScriptDto(ScriptDtoTool.bytesInputScript(inputScriptDto));
+        Assert.assertEquals(JsonUtil.toString(inputScriptDto),JsonUtil.toString(resumeInputScriptDto));
 
 
 
         OutputScriptDto outputScriptDto = new OutputScriptDto();
-        outputScriptDto.add(HexUtil.bytesToHexString(OperationCodeEnum.OP_DUP.getCode()));
-        outputScriptDto.add(HexUtil.bytesToHexString(OperationCodeEnum.OP_HASH160.getCode()));
-        outputScriptDto.add(HexUtil.bytesToHexString(OperationCodeEnum.OP_PUSHDATA.getCode()));
+        outputScriptDto.add(ByteUtil.bytesToHexString(OperationCodeEnum.OP_DUP.getCode()));
+        outputScriptDto.add(ByteUtil.bytesToHexString(OperationCodeEnum.OP_HASH160.getCode()));
+        outputScriptDto.add(ByteUtil.bytesToHexString(OperationCodeEnum.OP_PUSHDATA.getCode()));
         outputScriptDto.add("955c1464982a1c904b7b1029598de6ace11bd2b1");
-        outputScriptDto.add(HexUtil.bytesToHexString(OperationCodeEnum.OP_EQUALVERIFY.getCode()));
-        outputScriptDto.add(HexUtil.bytesToHexString(OperationCodeEnum.OP_CHECKSIG.getCode()));
+        outputScriptDto.add(ByteUtil.bytesToHexString(OperationCodeEnum.OP_EQUALVERIFY.getCode()));
+        outputScriptDto.add(ByteUtil.bytesToHexString(OperationCodeEnum.OP_CHECKSIG.getCode()));
 
-        OutputScriptDto resumeOutputScriptDto =  ScriptTool.outputScriptDto(ScriptTool.bytesScript(outputScriptDto));
-        Assert.assertEquals(JsonUtil.toJson(outputScriptDto),JsonUtil.toJson(resumeOutputScriptDto));
+        OutputScriptDto resumeOutputScriptDto =  ScriptDtoTool.outputScriptDto(ScriptDtoTool.bytesOutputScript(outputScriptDto));
+        Assert.assertEquals(JsonUtil.toString(outputScriptDto),JsonUtil.toString(resumeOutputScriptDto));
     }
 }
